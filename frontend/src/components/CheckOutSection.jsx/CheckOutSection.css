@@ -1,0 +1,301 @@
+.main-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.main-container h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.section-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.left-section {
+  flex: 2;
+}
+
+.right-section {
+  flex: 1;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  border: 2px dotted #F8C0C8;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ff4141;
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.address span:first-child {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.address:hover {
+  background: #fff5f5;
+  transform: scale(1.02);
+  border: 2px dotted #FF5376;
+}
+
+.address-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  background: #fafafa;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.address-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.address-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.address-text,
+.address-phone {
+  font-size: 14px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.deliver-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  background: #ff4141;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.deliver-btn:hover {
+  background: #e13b3b;
+  transform: scale(1.05);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;   /* vertical center */
+  justify-content: center; /* horizontal center */
+  z-index: 999;
+}
+
+.modal-content {
+  background: transparent; /* let form styling apply */
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Smooth animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.delivery-section {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.delivery-section h4 {
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.delivery-option {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.delivery-option input {
+  margin-right: 8px;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1280px) {
+  .main-container {
+    max-width: 1100px;
+    padding: 18px;
+  }
+
+  .main-container h3 {
+    font-size: 21px;
+  }
+
+  .delivery-section {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-container {
+    max-width: 950px;
+    padding: 16px;
+  }
+
+  .section-container {
+    gap: 20px;
+  }
+
+  .main-container h3 {
+    font-size: 20px;
+  }
+
+  .address {
+    padding: 16px;
+    font-size: 15px;
+  }
+
+  .deliver-btn {
+    font-size: 13px;
+    padding: 9px 14px;
+  }
+
+  .delivery-section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .section-container {
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+
+  .address {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .address span:first-child {
+    font-size: 20px;
+  }
+
+  .address-card {
+    padding: 14px;
+  }
+
+  .main-container h3 {
+    font-size: 19px;
+    text-align: center;
+  }
+
+  .delivery-section {
+    margin-top: 18px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  .main-container {
+    padding: 12px;
+    margin: 20px auto;
+  }
+
+  .main-container h3 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .address {
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .address span:first-child {
+    font-size: 18px;
+  }
+
+  .address-card {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .deliver-btn {
+    width: 100%; 
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .delivery-section {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .delivery-section h4 {
+    font-size: 15px;
+  }
+
+  .delivery-option {
+    font-size: 13px;
+  }
+}
