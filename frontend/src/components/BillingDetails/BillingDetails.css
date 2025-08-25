@@ -45,7 +45,7 @@
   margin: 8px 0;
 }
 
-.billingitem-total button {
+.billingitem-total .proceed-btn {
   margin-top: 16px;
   padding: 14px;
   font-size: 16px;
@@ -57,13 +57,16 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0px 4px 14px rgba(255, 65, 65, 0.3);
+  text-decoration: none;   /* 🔥 remove underline from <a> */
+  display: block;
+  text-align: center;      /* make text centered */
 }
 
-.billingitem-total button:hover {
+
+.billingitem-total .proceed-btn:hover {
   background: #e63939;
   transform: translateY(-2px);
 }
-
 @media (max-width: 1280px) {
   .billingitem-total {
     max-width: 380px;

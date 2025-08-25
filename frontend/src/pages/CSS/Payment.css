@@ -1,0 +1,39 @@
+.address-section {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.address-section p {
+  margin: 8px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.address-section p b {
+  color: #222;
+  margin-right: 6px;
+}
+
+.address-content {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.address-content:hover {
+  background: #f1f1f1;
+}
+
+.address-section > p {
+  text-align: center;
+  font-size: 16px;
+  color: #d32f2f;
+  font-weight: 600;
+}

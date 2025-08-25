@@ -100,6 +100,10 @@
   transform: scale(1.05);
 }
 
+.deliver-btn:disabled{
+  background: #ccc;
+}
+
 .modal-overlay {
   position: fixed;
   top: 30px;

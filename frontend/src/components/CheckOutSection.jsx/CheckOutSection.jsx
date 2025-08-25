@@ -1,19 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BillingDetails from '../BillingDetails/BillingDetails';
 import "./CheckOutSection.css";
 import ShippingForm from '../ShippingForm/ShippingForm';
 import { ShopContext } from '../../contexts/ShopContext';
 
 const CheckOutSection = () => {
-  const { addressData } = useContext(ShopContext);
+  const {setSelectedDelivery, selectedDelivery,addressData,setSelectedAddress,selectedAddress,deliveryOptions } = useContext(ShopContext);
   const [openForm, setOpenForm] = useState(false);
-
-  const deliveryOptions = [
-    { id: 1, name: "Standard (3-5 days)", price: 0 },
-    { id: 2, name: "Express (1-2 days)", price: 10 },
-    { id: 3, name: "Same Day Delivery", price: 20 },
-  ];
-  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
 
 
   return (
@@ -39,7 +32,7 @@ const CheckOutSection = () => {
               <p className="address-text">{addr.address}</p>
               <p className="address-text">{addr.city}</p>
               <p className="address-phone"><b>Phone:</b> {addr.phone}</p>
-              <button className="deliver-btn">Deliver Here</button>
+              <button className="deliver-btn" onClick={()=> setSelectedAddress(addr)} disabled={selectedAddress === addr}>{selectedAddress === addr ? "Selected":"Delivere Here"}</button>
             </div>
           ))}
 

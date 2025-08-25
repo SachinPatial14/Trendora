@@ -7,7 +7,7 @@ const BillingDetails = (props) => {
     const { getTotalAmount } = useContext(ShopContext);
     const subtotal = getTotalAmount();
     const shipping = props.shippingFee || 0;
-    const discount = (subtotal > 85) ? 20 : 0 ;
+    const discount = (subtotal > 85) ? 20 : 0;
     const total = subtotal + shipping - discount;
 
     return (
@@ -34,8 +34,12 @@ const BillingDetails = (props) => {
                     <h3>${total}</h3>
                 </div>
             </div>
-            <Link to={`/${props.path}`}>
-              <button>PROCEED TO {props.location === "checkout" ? "CHECKOUT" : "PAYMENT"}</button>
+            <Link
+                to={`/${props.path}`}
+                className="proceed-btn"
+                style={{ display: props.location === "shipping" ? "none" : "block" }}
+            >
+                PROCEED TO {props.location === "checkout" ? "CHECKOUT" : "PAYMENT"}
             </Link>
         </div>
     )

@@ -12,6 +12,16 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState(getDefaultCart());
     const [addressData,setAddressData] = useState([]) ;
+    const [selectedAddress,setSelectedAddress] = useState(null) ;
+
+      const deliveryOptions = [
+    { id: 1, name: "Standard (3-5 days)", price: 0 },
+    { id: 2, name: "Express (1-2 days)", price: 10 },
+    { id: 3, name: "Same Day Delivery", price: 20 },
+  ];
+
+    const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
+
 
     const addToCart = (itemId)=>{
        setCartItems((prev)=>({
@@ -54,7 +64,7 @@ const ShopContextProvider = (props) => {
         setAddressData(((prev)=>[...prev, data])) ;
     };
 
-    const contextValue = {addressData,addAddress, getTotalCartItems,getTotalAmount,all_product,cartItems,addToCart,removeFromCart };
+    const contextValue = {selectedDelivery,setSelectedDelivery,deliveryOptions,selectedAddress,addressData,addAddress,setSelectedAddress, getTotalCartItems,getTotalAmount,all_product,cartItems,addToCart,removeFromCart };
 
     return (
         <ShopContext.Provider value={contextValue}>
