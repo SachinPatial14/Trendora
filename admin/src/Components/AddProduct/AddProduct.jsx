@@ -1,57 +1,68 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import "./AddProduct.css";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 const AddProduct = () => {
     const [image, setImage] = useState(false);
-    const [productDetails,setProductDetails] = useState({
-        name:"",
-        image:"",
-        category:"women",
-        new_price:"",
-        old_price:"",
+    const [productDetails, setProductDetails] = useState({
+        name: "",
+        image: "",
+        category: "women",
+        new_price: "",
+        old_price: "",
     })
 
     const imageHandler = (e) => {
         setImage(e.target.files[0]);
     }
 
-    const changeHandler = (e)=>{
-        setProductDetails({...productDetails,
-            [e.target.name]: e.target.value ,
+    const changeHandler = (e) => {
+        setProductDetails({
+            ...productDetails,
+            [e.target.name]: e.target.value,
         })
     };
 
-    const addProduct = async()=>{
+    const addProduct = async () => {
         console.log(productDetails);
         let responseData;
-        let product = productDetails ;
+        let product = productDetails;
 
-        let formData = new FormData() ;
-        formData.append('product',image);
+        let formData = new FormData();
+        formData.append('product', image);
 
-        await fetch('http://localhost:4000/upload',{
-            method : 'POST',
-            headers:{
+        await fetch('http://localhost:4000/upload', {
+            method: 'POST',
+            headers: {
                 Accept: 'application/json',
             },
-            body:formData
-        }).then((res)=> res.json()).then((data)=>{responseData = data});
+            body: formData
+        }).then((res) => res.json()).then((data) => { responseData = data });
 
-        if(responseData.success){
-            product.image = responseData.image_url ;
+        if (responseData.success) {
+            product.image = responseData.image_url;
             console.log(product);
-            await fetch('http://localhost:4000/addproduct',{
-                method:"POST",
-                headers:{
-                    Accept:'application/json',
-                    'Content-Type' : 'application/json',
+            await fetch('http://localhost:4000/addproduct', {
+                method: "POST",
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body:JSON.stringify(product),
-            }).then((res)=> res.json()).then((data)=>{
-                data.success?alert("Product Added"):alert("Product added failed")
+                body: JSON.stringify(product),
+            }).then((res) => res.json()).then((data) => {
+                data.success ? alert("Product Added") : alert("Product added failed")
             })
-        }
+        };
+
+        setProductDetails({
+            name: "",
+            image: "",
+            category: "women",
+            new_price: "",
+            old_price: "",
+        });
+        setImage(false);
+
     };
 
     return (
@@ -81,7 +92,7 @@ const AddProduct = () => {
             <div className="addproduct-itemfield">
                 <label htmlFor="file-input" className="cursor-pointer">
                     {image ? (
-                        <img
+                        <img          
                             src={URL.createObjectURL(image)}
                             alt="Uploaded preview"
                             className="w-32 h-32 object-cover rounded-lg shadow"
@@ -102,7 +113,7 @@ const AddProduct = () => {
                     hidden
                 />
             </div>
-            <button onClick={()=>addProduct()} className='addproduct-btn'>ADD</button>
+            <button onClick={() => addProduct()} className='addproduct-btn'>ADD</button>
         </div>
     )
 }
