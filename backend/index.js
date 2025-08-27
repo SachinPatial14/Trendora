@@ -176,6 +176,14 @@ app.post('/login',async(req,res)=>{
         errors:"Wrong email Id"
     })
    }
+});
+
+// creating endpoint for new collection data //
+app.get('/newcollection',async(req,res)=>{
+    let products = await Product.find({});
+    let newcollection = products.slice(1).slice(-8);
+    console.log("New collection fetched");
+    res.send(newcollection);
 })
 
 app.listen(port,(err)=>{
