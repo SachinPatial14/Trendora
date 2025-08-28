@@ -228,8 +228,14 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
         userData.cartData[req.body.itemId] -= 1;
     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
     res.send("Removed")
+});
 
-})
+// creating get cart data //
+app.post('/getcart',fetchUser,async(req,res)=>{
+   console.log("get cart");
+   let userData = await Users.findOne({_id:req.user.id});
+   res.json(userData.cartData) ;
+});
 
 app.listen(port, (err) => {
     if (!err) {
