@@ -10,70 +10,94 @@ const getDefaultCart = () => {
     return cart;
 }
 const ShopContextProvider = (props) => {
-    const [all_product,setAll_Product] = useState([]);
+    const [all_product, setAll_Product] = useState([]);
     const [cartItems, setCartItems] = useState(getDefaultCart());
-    const [addressData,setAddressData] = useState([]) ;
-    const [selectedAddress,setSelectedAddress] = useState(null) ;
+    const [addressData, setAddressData] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState(null);
 
-      const deliveryOptions = [
-    { id: 1, name: "Standard (3-5 days)", price: 0 },
-    { id: 2, name: "Express (1-2 days)", price: 10 },
-    { id: 3, name: "Same Day Delivery", price: 20 },
-  ];
+    const deliveryOptions = [
+        { id: 1, name: "Standard (3-5 days)", price: 0 },
+        { id: 2, name: "Express (1-2 days)", price: 10 },
+        { id: 3, name: "Same Day Delivery", price: 20 },
+    ];
 
     const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
 
-    useEffect(()=>{
-       fetch('http://localhost:4000/allproducts').
-       then((res)=>res.json())
-       .then((data)=>{
-        setAll_Product(data);
-       })
-    },[])
+    useEffect(() => {
+        fetch('http://localhost:4000/allproducts').
+            then((res) => res.json())
+            .then((data) => {
+                setAll_Product(data);
+            })
+    }, [])
 
 
-    const addToCart = (itemId)=>{
-       setCartItems((prev)=>({
-        ...prev,
-        [itemId] : prev[itemId] + 1
-       }));
+    const addToCart = (itemId) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: prev[itemId] + 1
+        }));
+        if (localStorage.getItem('auth-token')) {
+            fetch('http://localhost:4000/addtocart', {
+                method: "POST",
+                headers: {
+                    Accept: "application/form-data",
+                    'auth-token': `${localStorage.getItem("auth-token")}`,
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify({ "itemId": itemId }),
+            }).then((res) => res.json()).
+                then((data) => console.log(data))
+        }
 
     }
 
-    const removeFromCart = (itemId)=>{
-               setCartItems((prev)=>({
-        ...prev,
-        [itemId] : prev[itemId] - 1
-       }))
+    const removeFromCart = (itemId) => {
+        setCartItems((prev) => ({
+            ...prev,
+            [itemId]: prev[itemId] - 1
+        }));
+        if(localStorage.getItem("auth-token")){
+                        fetch('http://localhost:4000/removefromcart', {
+                method: "POST",
+                headers: {
+                    Accept: "application/form-data",
+                    'auth-token': `${localStorage.getItem("auth-token")}`,
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify({ "itemId": itemId }),
+            }).then((res) => res.json()).
+                then((data) => console.log(data))
+        }
 
     }
 
-    const getTotalAmount = () =>{
+    const getTotalAmount = () => {
         let totalAmount = 0;
-        for (const item in cartItems){
-            if(cartItems[item]>0){
-                let itemInfo = all_product.find((product)=> product.id === Number(item));
-                totalAmount += itemInfo.new_price * cartItems[item]; 
+        for (const item in cartItems) {
+            if (cartItems[item] > 0) {
+                let itemInfo = all_product.find((product) => product.id === Number(item));
+                totalAmount += itemInfo.new_price * cartItems[item];
             }
         };
-        return totalAmount ;
+        return totalAmount;
     };
 
-    const getTotalCartItems =()=>{
-        let totalItems = 0 ;
-        for(const item in cartItems){
-            if(cartItems[item]>0){
-                totalItems += cartItems[item] ;
+    const getTotalCartItems = () => {
+        let totalItems = 0;
+        for (const item in cartItems) {
+            if (cartItems[item] > 0) {
+                totalItems += cartItems[item];
             }
         };
-        return totalItems ;
+        return totalItems;
     };
 
-    const addAddress = (data)=>{
-        setAddressData(((prev)=>[...prev, data])) ;
+    const addAddress = (data) => {
+        setAddressData(((prev) => [...prev, data]));
     };
 
-    const contextValue = {selectedDelivery,setSelectedDelivery,deliveryOptions,selectedAddress,addressData,addAddress,setSelectedAddress, getTotalCartItems,getTotalAmount,all_product,cartItems,addToCart,removeFromCart };
+    const contextValue = { selectedDelivery, setSelectedDelivery, deliveryOptions, selectedAddress, addressData, addAddress, setSelectedAddress, getTotalCartItems, getTotalAmount, all_product, cartItems, addToCart, removeFromCart };
 
     return (
         <ShopContext.Provider value={contextValue}>
