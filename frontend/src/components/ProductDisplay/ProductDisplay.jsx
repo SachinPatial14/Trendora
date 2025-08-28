@@ -53,6 +53,9 @@ const ProductDisplay = (props) => {
                         ${product.new_price}
                     </div>
                 </div>
+                <div className="productdisplay-quantity">
+                   <p><b style={{color: product.quantity > 0?"#149911":"#FF331F"}}>{product.quantity > 0? "In Stock":"Out Of Stock"}</b></p>
+                </div>
                 <div className="productdisplay-right-description">
                     A cloth shirt is a garment worn on the upper body, typically made from woven fabric. It has a collar, sleeves, and a full-length opening at the front, which is closed with buttons. Shirts can be made from a variety of materials, including cotton, linen, silk, and synthetic blends.
                 </div>
@@ -66,7 +69,7 @@ const ProductDisplay = (props) => {
                         <div>XXL</div>
                     </div>
                 </div>
-                <button onClick={() => addToCart(product.id)}>ADD TO CART</button>
+                <button onClick={() => addToCart(product.id)} disabled={product.quantity <=0 && true} style={{backgroundColor:product.quantity <=0 && "#9DACB2" }}>ADD TO CART</button>
                 <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
                 <p className="productdisplay-right-category"><span>Tags :</span>Modern , Latest</p>
 

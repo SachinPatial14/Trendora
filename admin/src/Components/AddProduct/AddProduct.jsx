@@ -10,6 +10,7 @@ const AddProduct = () => {
         category: "women",
         new_price: "",
         old_price: "",
+        quantity: "",
     })
 
     const imageHandler = (e) => {
@@ -60,6 +61,7 @@ const AddProduct = () => {
             category: "women",
             new_price: "",
             old_price: "",
+            quantity: "",
         });
         setImage(false);
 
@@ -80,6 +82,10 @@ const AddProduct = () => {
                     <p> Offer Price</p>
                     <input type='text' value={productDetails.new_price} onChange={changeHandler} name="new_price" placeholder='Type here' />
                 </div>
+            </div>
+            <div className='product-quantity'>
+                <p>Quantity</p>
+                <input type="number" value={productDetails.quantity} onChange={changeHandler} name="quantity" placeholder='Set Quantity'/>
             </div>
             <div className="addproduct-itemfield">
                 <p>Product Category</p>

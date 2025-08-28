@@ -35,6 +35,7 @@ const ListProduct = () => {
       <div className="listproduct-format-main">
         <p>Products</p>
         <p>Title</p>
+        <p>Quantity</p>
         <p>Old Price</p>
         <p>New Price</p>
         <p>Category</p>
@@ -46,6 +47,7 @@ const ListProduct = () => {
           return <><div key={index} className="listproduct-format-main listproduct-format">
                 <img src={product.image} alt="" className="listproduct-product-icon" />
                 <p>{product.name}</p>
+                <p style={{color:product.quantity> 0?"#149911":"#FF331F"}}>{product.quantity}</p>
                 <p>${product.old_price}</p>
                 <p>${product.new_price}</p>
                 <p>{product.category}</p>
