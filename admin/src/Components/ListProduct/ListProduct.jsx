@@ -55,7 +55,7 @@ const ListProduct = () => {
             <p>${product.new_price}</p>
             <p>{product.category}</p>
             <Link to={`/updateproduct/${product._id}`}>  <FaSyncAlt
-              size={20}
+              size={20}  className="listproduct-edit-icon"
             /></Link>
             <img src={cross_icon} onClick={() => remove_product(product.id)} alt="cross icon " className="listproduct-remove-icon" />
           </div>

@@ -102,6 +102,33 @@ app.get("/allproducts", async (req, res) => {
     res.send(product);
 });
 
+// get product which wants to update //
+app.get('/updateproduct/:id',async(req,res)=>{
+    let productId = req.params.id ;
+    let getProduct =await Product.findById(productId);
+    if(!getProduct){
+       return res.status(404).json({message:"product not found"})
+    }
+    res.status(200).json(getProduct)
+});
+
+// now update getted product //
+app.put('/updategetproduct/:id', async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({ message: "Product updated successfully", product: updated });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating product", error: err.message });
+  }
+});
+
 // schema creating for user model //
 
 const Users = mongoose.model('Users', {
