@@ -129,6 +129,17 @@ app.put('/updategetproduct/:id', async (req, res) => {
   }
 });
 
+
+const addressSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  country: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  phone: { type: String, required: true }
+}, { _id: false });
+
 // schema creating for user model //
 
 const Users = mongoose.model('Users', {
@@ -142,6 +153,7 @@ const Users = mongoose.model('Users', {
     password: {
         type: String
     },
+    addresses:[addressSchema],
     cartData: {
         type: Object,
     },
@@ -196,7 +208,7 @@ app.post('/login', async (req, res) => {
                 }
             };
             const token = jwt.sign(data, 'secret_ecom');
-            res.json({ success: true, token })
+            res.json({ success: true, token,user })
         } else {
             res.json({
                 success: false,
@@ -211,6 +223,64 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// creating endpoint for get all users with their deatils //
+app.get("/allusers",async(req,res)=>{
+    try{
+        const allUsers = await Users.find({});
+        if(!allUsers){
+            res.status(404).json({message:"All users does not found"});
+        };
+        res.status(200).json(allUsers);
+    }catch(err){
+        console.error("Error to fetch all users",err);
+        res.status(500).json({message:"Error to find all users"});
+    }
+});
+
+//creating end point for post address field in user data //
+app.put("/saveaddress", async (req, res) => {
+  try {
+    const { _id, address } = req.body;
+
+    if (!_id || !address) {
+      return res.status(400).json({ message: "_id and address are required" });
+    }
+
+    const updatedUser = await Users.findByIdAndUpdate(
+      _id,
+      { $push: {  addresses: address } },  
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Address added successfully",
+      addresses: updatedUser.addresses
+    });
+  } catch (err) {
+    console.error("Error failed to add address", err);
+    res.status(500).json({ message: "Error adding address", error: err.message });
+  }
+});
+
+
+// get user addresses//
+app.get("/getuseraddress/:id",async(req,res)=>{
+    try{
+        const {id} = req.params ;
+        const user = await Users.findById(id);
+        if(!user){
+            res.status(404).json({message:"User not found"})
+        };
+        res.status(200).json(user)
+    }catch(err){
+        console.error("Error to get user",err);
+        res.status(500).json({message:"Error to get user",error:err.message})
+    }
+})
 // creating endpoint for new collection data //
 app.get('/newcollection', async (req, res) => {
     let products = await Product.find({});

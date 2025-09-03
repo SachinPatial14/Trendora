@@ -1,14 +1,15 @@
 import React, { useContext, useState } from "react";
 import "./ShippingForm.css";
 import { ShopContext } from "../../contexts/ShopContext";
+import axios from "axios";
 
 const ShippingForm = ({ close }) => {
-    const { addAddress } = useContext(ShopContext);
+    const { loggedUser, setUserAddress } = useContext(ShopContext);
     const [formData, setFormData] = useState({
         id: "",
-        fullName: "",
+        name: "",
         phone: "",
-        address: "",
+        street: "",
         city: "",
         state: "",
         postalCode: "",
@@ -24,25 +25,32 @@ const ShippingForm = ({ close }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const newAddres = {
-            ...formData,
-            id: Math.round(Math.random()*100),
-        }
-        addAddress(newAddres);
-        setFormData({
-            id: "",
-            fullName: "",
-            phone: "",
-            address: "",
-            city: "",
-            state: "",
-            postalCode: "",
-            country: "",
-        });
-        close(false);
+        try {
+            const res = await axios.put("http://localhost:4000/saveaddress", {
+                _id: loggedUser._id,
+                address: formData,
+            });
 
+            setUserAddress(res.data.addresses);
+
+            setFormData({
+                id: "",
+                name: "",
+                phone: "",
+                street: "",
+                city: "",
+                state: "",
+                postalCode: "",
+                country: "",
+            });
+
+            close(false);
+        } catch (err) {
+            console.error("Error saving address", err);
+            alert("Failed to save address");
+        }
     };
 
     return (
@@ -51,9 +59,9 @@ const ShippingForm = ({ close }) => {
 
             <input
                 type="text"
-                name="fullName"
+                name="name"
                 placeholder="Full Name"
-                value={formData.fullName}
+                value={formData.name}
                 onChange={handleChange}
                 required
             />
@@ -69,9 +77,9 @@ const ShippingForm = ({ close }) => {
             />
 
             <textarea
-                name="address"
+                name="street"
                 placeholder="Street Address"
-                value={formData.address}
+                value={formData.street}
                 onChange={handleChange}
                 required
             />

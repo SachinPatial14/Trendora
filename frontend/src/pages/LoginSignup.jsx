@@ -27,6 +27,7 @@ const LoginSignup = () => {
 
         if (responseData.success) {
             localStorage.setItem('auth-token', responseData.token);
+            localStorage.setItem('auth-user',JSON.stringify(responseData.user));
             window.alert('Congrats you are successfully logged in');
             window.location.replace("/")
             setFormData({

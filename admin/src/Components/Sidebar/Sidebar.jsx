@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Sidebar.css";
 import {NavLink } from "react-router-dom";
-import { FaIcons, FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { FaList } from "react-icons/fa";
 
 
@@ -16,6 +16,10 @@ const Sidebar = () => {
             title:"Product List",
             url:"/listproduct",
             icon:<FaList size={28} color="#333" />
+        },{
+            title:"Customer",
+            url:"/customer",
+            icon:<FaUser size={20} color="#333"/>
         }
     ]
 

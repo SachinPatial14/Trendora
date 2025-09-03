@@ -5,7 +5,7 @@ import ShippingForm from '../ShippingForm/ShippingForm';
 import { ShopContext } from '../../contexts/ShopContext';
 
 const CheckOutSection = () => {
-  const {setSelectedDelivery, selectedDelivery,addressData,setSelectedAddress,selectedAddress,deliveryOptions } = useContext(ShopContext);
+  const { userAddress, setSelectedDelivery, selectedDelivery, setSelectedAddress, selectedAddress, deliveryOptions } = useContext(ShopContext);
   const [openForm, setOpenForm] = useState(false);
 
 
@@ -26,13 +26,13 @@ const CheckOutSection = () => {
             <span>Add Address</span>
           </div>
 
-          {addressData.map((addr) => (
-            <div key={addr.id} className="address-card">
+          {userAddress.map((addr, index) => (
+            <div key={index} className="address-card">
               <h4 className="address-name">{addr.name}</h4>
-              <p className="address-text">{addr.address}</p>
+              <p className="address-text">{addr.street}</p>
               <p className="address-text">{addr.city}</p>
               <p className="address-phone"><b>Phone:</b> {addr.phone}</p>
-              <button className="deliver-btn" onClick={()=> setSelectedAddress(addr)} disabled={selectedAddress === addr}>{selectedAddress === addr ? "Selected":"Delivere Here"}</button>
+              <button className="deliver-btn" onClick={() => setSelectedAddress(addr)} disabled={selectedAddress === addr}>{selectedAddress === addr ? "Selected" : "Delivere Here"}</button>
             </div>
           ))}
 
@@ -54,10 +54,10 @@ const CheckOutSection = () => {
         </div>
 
         <div className="right-section">
-          <BillingDetails 
-            path="payment" 
-            location="payment" 
-            shippingFee={selectedDelivery.price} 
+          <BillingDetails
+            path="payment"
+            location="payment"
+            shippingFee={selectedDelivery.price}
           />
         </div>
       </div>

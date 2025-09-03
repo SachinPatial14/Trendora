@@ -18,8 +18,8 @@ const Payment = () => {
             <p><b>Please Choose Address First</b></p>
           ) : (
             <div className="address-content">
-              <p><b>Name:</b>{selectedAddress.fullName}</p>
-              <p><b>Address:</b>{selectedAddress.address}</p>
+              <p><b>Name:</b>{selectedAddress.name}</p>
+              <p><b>Address:</b>{selectedAddress.street}</p>
               <p><b>Mobile No.:</b>{selectedAddress.phone}</p>
               <p><b>Place:</b>{selectedAddress.country}, {selectedAddress.city}</p>
               <p><b>Shipping Method :</b>{selectedDelivery.name}</p>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { createContext, useState } from "react";
 import { useEffect } from "react";
 
@@ -12,8 +13,9 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
     const [all_product, setAll_Product] = useState([]);
     const [cartItems, setCartItems] = useState(getDefaultCart());
-    const [addressData, setAddressData] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
+    const [loggedUser, setLoggedUser] = useState(null);
+    const [userAddress, setUserAddress] = useState([]);
 
     const deliveryOptions = [
         { id: 1, name: "Standard (3-5 days)", price: 0 },
@@ -30,21 +32,31 @@ const ShopContextProvider = (props) => {
                 setAll_Product(data);
             });
 
-            if(localStorage.getItem('auth-token')){
-                fetch('http://localhost:4000/getcart',{
-                    method:"POST",
-                    headers:{
-                        Accept:'application/form-data',
-                        'auth-token':`${localStorage.getItem('auth-token')}`,
-                        'Content-Type':"application/json"
-                    },
-                    body:"",
-                }).then((res)=> res.json())
-                .then((data)=>{
+        if (localStorage.getItem('auth-token')) {
+            fetch('http://localhost:4000/getcart', {
+                method: "POST",
+                headers: {
+                    Accept: 'application/form-data',
+                    'auth-token': `${localStorage.getItem('auth-token')}`,
+                    'Content-Type': "application/json"
+                },
+                body: "",
+            }).then((res) => res.json())
+                .then((data) => {
                     setCartItems(data)
                 })
-            }
-    }, [])
+        }
+    }, []);
+
+    useEffect(async () => {
+        const user = JSON.parse(localStorage.getItem("auth-user"));
+        if (user) {
+            setLoggedUser(user);
+
+            const res = await axios.get(`http://localhost:4000/getuseraddress/${user._id}`)
+            setUserAddress(res.data.addresses || []);
+        }
+    }, []);
 
 
     const addToCart = (itemId) => {
@@ -72,8 +84,8 @@ const ShopContextProvider = (props) => {
             ...prev,
             [itemId]: prev[itemId] - 1
         }));
-        if(localStorage.getItem("auth-token")){
-                        fetch('http://localhost:4000/removefromcart', {
+        if (localStorage.getItem("auth-token")) {
+            fetch('http://localhost:4000/removefromcart', {
                 method: "POST",
                 headers: {
                     Accept: "application/form-data",
@@ -108,11 +120,8 @@ const ShopContextProvider = (props) => {
         return totalItems;
     };
 
-    const addAddress = (data) => {
-        setAddressData(((prev) => [...prev, data]));
-    };
 
-    const contextValue = { selectedDelivery, setSelectedDelivery, deliveryOptions, selectedAddress, addressData, addAddress, setSelectedAddress, getTotalCartItems, getTotalAmount, all_product, cartItems, addToCart, removeFromCart };
+    const contextValue = { setUserAddress, userAddress, loggedUser, selectedDelivery, setSelectedDelivery, deliveryOptions, selectedAddress, setSelectedAddress, getTotalCartItems, getTotalAmount, all_product, cartItems, addToCart, removeFromCart };
 
     return (
         <ShopContext.Provider value={contextValue}>
