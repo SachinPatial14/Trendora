@@ -7,7 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const { type } = require("os");
-const { error } = require("console");
+const { error, timeStamp } = require("console");
 
 app.use(express.json());
 app.use(cors());
@@ -103,41 +103,41 @@ app.get("/allproducts", async (req, res) => {
 });
 
 // get product which wants to update //
-app.get('/updateproduct/:id',async(req,res)=>{
-    let productId = req.params.id ;
-    let getProduct =await Product.findById(productId);
-    if(!getProduct){
-       return res.status(404).json({message:"product not found"})
+app.get('/updateproduct/:id', async (req, res) => {
+    let productId = req.params.id;
+    let getProduct = await Product.findById(productId);
+    if (!getProduct) {
+        return res.status(404).json({ message: "product not found" })
     }
     res.status(200).json(getProduct)
 });
 
 // now update getted product //
 app.put('/updategetproduct/:id', async (req, res) => {
-  try {
-    const updated = await Product.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    if (!updated) {
-      return res.status(404).json({ message: "Product not found" });
+    try {
+        const updated = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!updated) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        res.status(200).json({ message: "Product updated successfully", product: updated });
+    } catch (err) {
+        res.status(500).json({ message: "Error updating product", error: err.message });
     }
-    res.status(200).json({ message: "Product updated successfully", product: updated });
-  } catch (err) {
-    res.status(500).json({ message: "Error updating product", error: err.message });
-  }
 });
 
 
 const addressSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  country: { type: String, required: true },
-  postalCode: { type: String, required: true },
-  phone: { type: String, required: true }
+    name: { type: String, required: true },
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    country: { type: String, required: true },
+    postalCode: { type: String, required: true },
+    phone: { type: String, required: true }
 }, { _id: false });
 
 // schema creating for user model //
@@ -153,7 +153,7 @@ const Users = mongoose.model('Users', {
     password: {
         type: String
     },
-    addresses:[addressSchema],
+    addresses: [addressSchema],
     cartData: {
         type: Object,
     },
@@ -208,7 +208,7 @@ app.post('/login', async (req, res) => {
                 }
             };
             const token = jwt.sign(data, 'secret_ecom');
-            res.json({ success: true, token,user })
+            res.json({ success: true, token, user })
         } else {
             res.json({
                 success: false,
@@ -224,61 +224,61 @@ app.post('/login', async (req, res) => {
 });
 
 // creating endpoint for get all users with their deatils //
-app.get("/allusers",async(req,res)=>{
-    try{
+app.get("/allusers", async (req, res) => {
+    try {
         const allUsers = await Users.find({});
-        if(!allUsers){
-            res.status(404).json({message:"All users does not found"});
+        if (!allUsers) {
+            res.status(404).json({ message: "All users does not found" });
         };
         res.status(200).json(allUsers);
-    }catch(err){
-        console.error("Error to fetch all users",err);
-        res.status(500).json({message:"Error to find all users"});
+    } catch (err) {
+        console.error("Error to fetch all users", err);
+        res.status(500).json({ message: "Error to find all users" });
     }
 });
 
 //creating end point for post address field in user data //
 app.put("/saveaddress", async (req, res) => {
-  try {
-    const { _id, address } = req.body;
+    try {
+        const { _id, address } = req.body;
 
-    if (!_id || !address) {
-      return res.status(400).json({ message: "_id and address are required" });
+        if (!_id || !address) {
+            return res.status(400).json({ message: "_id and address are required" });
+        }
+
+        const updatedUser = await Users.findByIdAndUpdate(
+            _id,
+            { $push: { addresses: address } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Address added successfully",
+            addresses: updatedUser.addresses
+        });
+    } catch (err) {
+        console.error("Error failed to add address", err);
+        res.status(500).json({ message: "Error adding address", error: err.message });
     }
-
-    const updatedUser = await Users.findByIdAndUpdate(
-      _id,
-      { $push: {  addresses: address } },  
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json({
-      message: "Address added successfully",
-      addresses: updatedUser.addresses
-    });
-  } catch (err) {
-    console.error("Error failed to add address", err);
-    res.status(500).json({ message: "Error adding address", error: err.message });
-  }
 });
 
 
 // get user addresses//
-app.get("/getuseraddress/:id",async(req,res)=>{
-    try{
-        const {id} = req.params ;
+app.get("/getuseraddress/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
         const user = await Users.findById(id);
-        if(!user){
-            res.status(404).json({message:"User not found"})
-        };
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
         res.status(200).json(user)
-    }catch(err){
-        console.error("Error to get user",err);
-        res.status(500).json({message:"Error to get user",error:err.message})
+    } catch (err) {
+        console.error("Error to get user", err);
+        res.status(500).json({ message: "Error to get user", error: err.message })
     }
 })
 // creating endpoint for new collection data //
@@ -317,6 +317,9 @@ const fetchUser = async (req, res, next) => {
 app.post('/addtocart', fetchUser, async (req, res) => {
     console.log("added", req.body.itemId);
     let userData = await Users.findOne({ _id: req.user.id });
+    if (!userData) {
+        return res.status(404).json({ message: "User not found" });
+    }
     userData.cartData[req.body.itemId] += 1;
     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
     res.send("Added")
@@ -326,6 +329,9 @@ app.post('/addtocart', fetchUser, async (req, res) => {
 app.post('/removefromcart', fetchUser, async (req, res) => {
     console.log("removed", req.body.itemId);
     let userData = await Users.findOne({ _id: req.user.id });
+    if (!userData) {
+        return res.status(404).json({ message: "User not found" });
+    }
     if (userData.cartData[req.body.itemId] > 0)
         userData.cartData[req.body.itemId] -= 1;
     await Users.findOneAndUpdate({ _id: req.user.id }, { cartData: userData.cartData });
@@ -333,11 +339,145 @@ app.post('/removefromcart', fetchUser, async (req, res) => {
 });
 
 // creating get cart data //
-app.post('/getcart',fetchUser,async(req,res)=>{
-   console.log("get cart");
-   let userData = await Users.findOne({_id:req.user.id});
-   res.json(userData.cartData) ;
+app.post('/getcart', fetchUser, async (req, res) => {
+    console.log("get cart");
+    let userData = await Users.findOne({ _id: req.user.id });
+    if (!userData) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    res.json(userData.cartData);
 });
+
+// reset cart//
+
+app.post('/emptycart', fetchUser, async (req, res) => {
+  try {
+    let userData = await Users.findOne({ _id: req.user.id });
+
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    let newCart = {};
+    for (let i = 0; i < 300; i++) {
+      newCart[i] = 0;
+    }
+
+    userData.cartData = newCart;
+    await userData.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Cart emptied successfully",
+      cartData: userData.cartData
+    });
+  } catch (err) {
+    console.error("Error emptying cart", err);
+    res.status(500).json({ message: "Error emptying cart", error: err.message });
+  }
+});
+
+
+// schema for orders //
+const orderSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+      required: true,
+    },
+    orders: [
+      {
+        quantity:{
+            type:Number,
+            required:true,
+        },
+        address:{
+          type:String,
+          required : true,
+        },
+        orderType: {
+          type: String,
+          required: true,
+        },
+        amount: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    orderDate: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+    orderStatus: {
+      type: String,
+      enum: ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"],
+      default: "Pending",
+    },
+  },
+  { timestamps: true }
+);
+
+const Order = mongoose.model("Order", orderSchema);
+
+// creating endpoint for post order data //
+app.post("/saveorder", async (req, res) => {
+    try {
+        const { userId, product } = req.body;
+        if (!userId || !product) {
+            res.status(400).json({ message: "All fields are required" });
+        };
+        const { orderType, amount,address,quantity } = product;
+        const orderData = {
+            userId,
+            orders: [{ orderType, amount,address,quantity }],
+        };
+        const newOrder = new Order(orderData);
+        await newOrder.save();
+        res.status(201).json({
+            message: "Order placed successfully",
+            orderId: newOrder._id,
+            order: newOrder,
+        });
+    } catch (err) {
+        console.error("Error placing order", err);
+        res.status(500).json({ message: "Error to placing order", error: err.message });
+    }
+});
+
+// enpoint for getting all orders //
+app.get("/getallorders",async(req,res)=>{
+    try{
+       const allOrders = await Order.find({});
+       if(!allOrders){
+        res.status(404).json({message:"All orders are not found"});
+       };
+       res.status(200).json(allOrders);
+    }catch(err){
+     console.error("Error failed to get all users",err);
+     res.status(500).json({message:"Internal server error",error:err.message});
+    }
+});
+
+// for only update the orderStatus //
+app.put("/updatestatus/:id",async(req,res)=>{
+    try{
+            const {id} = req.params ;
+    const {status} = req.body ;
+    
+    const updateStatus = await Order.findByIdAndUpdate(id,{$set:{orderStatus:status}},{new:true});
+
+    if(!updateStatus){
+        res.status(404).json({message:"Order not found"})
+    };
+    res.status(200).json(updateStatus)
+    }catch(err){
+        console.error("Error to update status",err);
+        res.status(500).json({message:"Internal server error",error:err.message})
+    }
+})
 
 app.listen(port, (err) => {
     if (!err) {

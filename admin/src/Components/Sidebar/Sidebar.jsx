@@ -3,6 +3,7 @@ import "./Sidebar.css";
 import {NavLink } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { FaList } from "react-icons/fa";
+import { FaClipboardList } from "react-icons/fa";
 
 
 const Sidebar = () => {
@@ -10,16 +11,21 @@ const Sidebar = () => {
         {
             title:"Add Product",
             url:"/addproduct",
-            icon:<FaShoppingCart size={28} color="#333" style={{ cursor: "pointer" }} />
+            icon:<FaShoppingCart size={28}  style={{ cursor: "pointer" }} />
         },
         {
             title:"Product List",
             url:"/listproduct",
-            icon:<FaList size={28} color="#333" />
+            icon:<FaList size={28}  />
         },{
             title:"Customer",
             url:"/customer",
-            icon:<FaUser size={20} color="#333"/>
+            icon:<FaUser size={20}/>
+        },
+        {
+            title:"Orders",
+            url:"/order",
+            icon:  <FaClipboardList size={24} />
         }
     ]
 

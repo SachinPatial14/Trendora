@@ -1,0 +1,119 @@
+.order-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.order-container h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.order-details p {
+  font-size: 16px;
+  background: #f9f9f9;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border-left: 5px solid #3498db;
+}
+
+.order-details span {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-right: 8px;
+}
+
+.order-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #3498db;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.order-btn:hover {
+  background: #2980b9;
+}
+
+
+@media (max-width: 1280px) {
+  .order-container {
+    max-width: 700px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .order-container {
+    max-width: 600px;
+  }
+
+  .order-container h2 {
+    font-size: 24px;
+  }
+
+  .order-details p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 800px) {
+  .order-container {
+    max-width: 90%;
+    padding: 15px 20px;
+  }
+
+  .order-container h2 {
+    font-size: 22px;
+  }
+
+  .order-btn {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  .order-container {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+
+  .order-container h2 {
+    font-size: 20px;
+  }
+
+  .order-details {
+    gap: 10px;
+  }
+
+  .order-details p {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .order-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

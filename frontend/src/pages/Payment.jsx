@@ -1,15 +1,59 @@
 import React, { useContext, useState } from "react";
-import { ShopContext } from "../contexts/ShopContext";
-import "./CSS/Payment.css" ;
+import { ShopContext, getDefaultCart } from "../contexts/ShopContext";
+import "./CSS/Payment.css";
 import BillingDetails from "../components/BillingDetails/BillingDetails";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const Payment = () => {
-    const { selectedAddress, selectedDelivery } = useContext(ShopContext);
-     const [method, setMethod] = useState("credit");
+  const { selectedAddress,setOrderDate, selectedDelivery, loggedUser, getTotalAmount, getTotalCartItems, setCartItems } = useContext(ShopContext);
+  const [method, setMethod] = useState("credit");
+  const navigate = useNavigate();
 
-    return (
-<div className="payment-container">
+  const placeOrder = async () => {
+    try {
+      if (!loggedUser || !loggedUser._id) {
+        alert("User not logged in");
+        return;
+      }
+
+      const res = await axios.post("http://localhost:4000/saveorder", {
+        userId: loggedUser._id,
+        product: {
+          orderType: method,
+          amount: getTotalAmount(),
+          address: selectedAddress.street,
+          quantity: getTotalCartItems(),
+        },
+      });
+
+      if (res.status === 201) {
+        alert("Order confirmed successfully");
+
+        await axios.post(
+          "http://localhost:4000/emptycart",
+          {},
+          {
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"), 
+            },
+          }
+        );
+
+       setOrderDate(new Date())
+        setCartItems(getDefaultCart());
+        console.log("Cart emptied");
+        navigate("/order");
+      }
+    } catch (err) {
+      alert("Error placing order");
+      console.error("Error to place order", err);
+    }
+  };
+
+  return (
+    <div className="payment-container">
       {/* Top Row: Address + Billing */}
       <div className="top-section">
         {/* Address Section */}
@@ -85,8 +129,9 @@ const Payment = () => {
           <button className="pay-btn">Pay Now</button>
         </div>
       ) : (
-        <button className="pay-btn alt">Place Order</button>
+        <button className="pay-btn alt" onClick={placeOrder}>Place Order</button>
       )}
-    </div> )}
+    </div>)
+}
 
 export default Payment

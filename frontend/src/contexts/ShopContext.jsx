@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 import { useEffect } from "react";
 
 export const ShopContext = createContext(null);
-const getDefaultCart = () => {
+export const getDefaultCart = () => {
     let cart = {};
     for (let index = 0; index < 300 + 1; index++) {
         cart[index] = 0;
@@ -12,6 +12,7 @@ const getDefaultCart = () => {
 }
 const ShopContextProvider = (props) => {
     const [all_product, setAll_Product] = useState([]);
+    const [orderDate,setOrderDate] = useState(null) ;
     const [cartItems, setCartItems] = useState(getDefaultCart());
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [loggedUser, setLoggedUser] = useState(null);
@@ -48,14 +49,20 @@ const ShopContextProvider = (props) => {
         }
     }, []);
 
-    useEffect(async () => {
-        const user = JSON.parse(localStorage.getItem("auth-user"));
-        if (user) {
-            setLoggedUser(user);
-
-            const res = await axios.get(`http://localhost:4000/getuseraddress/${user._id}`)
-            setUserAddress(res.data.addresses || []);
+    useEffect(() => {
+        async function fetchUserData() {
+            const user = JSON.parse(localStorage.getItem("auth-user"));
+            if (user) {
+                setLoggedUser(user);
+                try {
+                    const res = await axios.get(`http://localhost:4000/getuseraddress/${user._id}`);
+                    setUserAddress(res.data.addresses || []);
+                } catch (err) {
+                    setUserAddress([]); // fallback if not found
+                }
+            }
         }
+        fetchUserData();
     }, []);
 
 
@@ -121,7 +128,7 @@ const ShopContextProvider = (props) => {
     };
 
 
-    const contextValue = { setUserAddress, userAddress, loggedUser, selectedDelivery, setSelectedDelivery, deliveryOptions, selectedAddress, setSelectedAddress, getTotalCartItems, getTotalAmount, all_product, cartItems, addToCart, removeFromCart };
+    const contextValue = { orderDate,setOrderDate,setUserAddress, userAddress, loggedUser, selectedDelivery, setSelectedDelivery, deliveryOptions, selectedAddress, setSelectedAddress, getTotalCartItems, getTotalAmount, all_product, cartItems, addToCart, removeFromCart, setCartItems, getDefaultCart };
 
     return (
         <ShopContext.Provider value={contextValue}>
