@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import { MdShoppingBag, MdBarChart, MdGroup, MdArrowForward } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../../Context/DashContext";
+import Charts from "../Chart/Chart";
 
 const Dashboard = () => {
     const {countOrder,countUser,countProduct} = useDashboard();
@@ -61,6 +62,7 @@ const Dashboard = () => {
         </div>
 
       </div>
+      <Charts />
     </div>
   );
 };
