@@ -129,6 +129,20 @@ app.put('/updategetproduct/:id', async (req, res) => {
     }
 });
 
+// get total Count of products //
+app.get("/totalproducts",async(req,res)=>{
+    try{
+      const totalProduct = await Product.countDocuments({});
+      if(!totalProduct){
+        res.status(404).json({message:"Error to found total number of products"});
+      };
+      res.status(200).json(totalProduct);
+    }catch(err){
+        console.error("Error to get total number of products",err);
+        res.status(500).json({message:"Internal server error",error:err.message});
+    }
+})
+
 
 const addressSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -279,6 +293,20 @@ app.get("/getuseraddress/:id", async (req, res) => {
     } catch (err) {
         console.error("Error to get user", err);
         res.status(500).json({ message: "Error to get user", error: err.message })
+    }
+});
+
+// get total count of Users //
+app.get("/totalusers",async(req,res)=>{
+    try{
+      const totalUser = await Users.countDocuments({});
+      if(!totalUser){
+        res.status(404).json({message:"Error to found count of users"});
+      };
+      res.status(200).json(totalUser);
+    }catch(err){
+        console.error("Error to count total number of users",err);
+        res.status(500).json({message:"Internal server error",error:err.message});
     }
 })
 // creating endpoint for new collection data //
@@ -476,6 +504,20 @@ app.put("/updatestatus/:id",async(req,res)=>{
     }catch(err){
         console.error("Error to update status",err);
         res.status(500).json({message:"Internal server error",error:err.message})
+    }
+});
+
+// count total orders //
+app.get("/totalorders",async(req,res)=>{
+    try{
+     const totalOrders = await Order.countDocuments({});
+     if(!totalOrders){
+        res.status(404).json({message:"Error to found total numbers of orders"});
+     };
+     res.status(200).json(totalOrders);
+    }catch(err){
+        console.error("Error to counts the total orders",err);
+        res.status(500).json({message:"Error to found total number of orders",error:err.message})
     }
 })
 

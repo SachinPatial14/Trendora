@@ -4,10 +4,16 @@ import {NavLink } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { FaList } from "react-icons/fa";
 import { FaClipboardList } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 
 
 const Sidebar = () => {
     const menuItems=[
+        {
+            title:"Dashboard",
+            url:"/",
+            icon:<MdDashboard size={24} style={{ cursor: "pointer" }}  />
+        },
         {
             title:"Add Product",
             url:"/addproduct",
